@@ -4,18 +4,17 @@ import { Animated, Text, View } from "react-native";
 export default function Index() {
   const larAnimada = useRef(new Animated.Value(100)).current;
   const altAnimada = useRef(new Animated.Value(100)).current;
-  const opacidadAnimada = useRef(new Animated.Value(0)).current;
 
   const animar = () => {
-    Animated.sequence([
-      Animated.timing(opacidadAnimada, {
-        toValue: 1,
-        duration: 2000,
-        useNativeDriver: false,
-      }),
-      Animated.parallel([
+    Animated.loop(
+      Animated.sequence([
         Animated.timing(larAnimada, {
           toValue: 300,
+          duration: 2000,
+          useNativeDriver: false,
+        }),
+        Animated.timing(larAnimada, {
+          toValue: 100,
           duration: 2000,
           useNativeDriver: false,
         }),
@@ -24,8 +23,13 @@ export default function Index() {
           duration: 2000,
           useNativeDriver: false,
         }),
-      ]),
-    ]).start();
+        Animated.timing(altAnimada, {
+          toValue: 100,
+          duration: 2000,
+          useNativeDriver: false,
+        }),
+      ])
+    ).start();
   };
 
   useEffect(() => {
@@ -45,9 +49,9 @@ export default function Index() {
           width: larAnimada,
           height: altAnimada,
           backgroundColor: "red",
-          opacity: opacidadAnimada,
           alignItems: "center",
           justifyContent: "center",
+          borderRadius: 10,
         }}
       >
         <Text style={{ color: "white" }}>Hello World!!</Text>

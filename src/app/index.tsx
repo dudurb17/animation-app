@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { Animated, View } from "react-native";
+import { Alert, Animated, View } from "react-native";
 
 export default function Index() {
   const larAnimada = useRef(new Animated.Value(100)).current;
@@ -27,7 +27,9 @@ export default function Index() {
         duration: 2000,
         useNativeDriver: false,
       }),
-    ]).start();
+    ]).start(() => {
+      Alert.alert("Animação terminada");
+    });
   };
 
   useEffect(() => {

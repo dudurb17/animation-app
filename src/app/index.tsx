@@ -1,40 +1,15 @@
-import { useEffect, useRef } from "react";
-import { Alert, Animated, View } from "react-native";
+import { useRef } from "react";
+import { Text, TouchableOpacity, View } from "react-native";
+import * as Animatable from "react-native-animatable";
+
+const ButtonAnimated = Animatable.createAnimatableComponent(TouchableOpacity);
 
 export default function Index() {
-  const larAnimada = useRef(new Animated.Value(100)).current;
-  const altAnimada = useRef(new Animated.Value(100)).current;
+  const buttonRef = useRef<typeof TouchableOpacity>(null);
 
-  let porcentaje = larAnimada.interpolate({
-    inputRange: [0, 300],
-    outputRange: ["0%", "100%"],
-  });
-
-  let porcentajeAlt = altAnimada.interpolate({
-    inputRange: [0, 300],
-    outputRange: ["0%", "100%"],
-  });
-
-  const animar = () => {
-    Animated.sequence([
-      Animated.timing(larAnimada, {
-        toValue: 300,
-        duration: 2000,
-        useNativeDriver: false,
-      }),
-      Animated.timing(altAnimada, {
-        toValue: 300,
-        duration: 2000,
-        useNativeDriver: false,
-      }),
-    ]).start(() => {
-      Alert.alert("Animação terminada");
-    });
+  const handlePress = () => {
+    buttonRef.current?.shake(1000);
   };
-
-  useEffect(() => {
-    animar();
-  }, []);
 
   return (
     <View
@@ -44,16 +19,33 @@ export default function Index() {
         alignItems: "center",
       }}
     >
-      <Animated.View
+      <Animatable.Text
+        animation="shake"
         style={{
-          width: porcentaje,
-          height: porcentajeAlt,
-          backgroundColor: "red",
+          fontSize: 20,
+          fontWeight: "bold",
+          color: "black",
+        }}
+      >
+        Hello World!!
+      </Animatable.Text>
+      <ButtonAnimated
+        ref={buttonRef}
+        onPress={handlePress}
+        style={{
+          backgroundColor: "blue",
+          padding: 10,
+          borderRadius: 10,
+          marginTop: 20,
+          width: 200,
           alignItems: "center",
           justifyContent: "center",
-          borderRadius: 10,
         }}
-      />
+      >
+        <Text style={{ color: "white", fontSize: 20, fontWeight: "bold" }}>
+          Animar
+        </Text>
+      </ButtonAnimated>
     </View>
   );
 }
